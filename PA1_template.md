@@ -38,9 +38,9 @@ Here we show the histogram of the average number obtained.
 
 
 ```r
-meandata<-aggregate(actdata$steps,list(actdata$date),mean,na.rm=TRUE)
-names(meandata)<-c('Date','Mean_Steps_per_Day')
-hist(meandata$Mean_Steps_per_Day,xlab='Mean Steps per Day',main='Histogram of Mean Steps per Day \n from 1st Oct to 30th Nov 2012')
+totaldata<-aggregate(actdata$steps,list(actdata$date),sum,na.rm=TRUE)
+names(totaldata)<-c('Date','Total_Steps_per_Day')
+hist(totaldata$Total_Steps_per_Day,breaks=20,xlab='Total Steps per Day',main='Histogram of Total Steps per Day \n from 1st Oct to 30th Nov 2012')
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-2-1.png)<!-- -->
@@ -48,20 +48,20 @@ hist(meandata$Mean_Steps_per_Day,xlab='Mean Steps per Day',main='Histogram of Me
 The mean number of total steps per day can be calculated as follows: 
 
 ```r
-mean(meandata$Mean_Steps_per_Day,na.rm=TRUE)
+mean(totaldata$Total_Steps_per_Day,na.rm=TRUE)
 ```
 
 ```
-## [1] 37.3826
+## [1] 9354.23
 ```
 While the median number is as follows:
 
 ```r
-median(meandata$Mean_Steps_per_Day,na.rm=TRUE)
+median(totaldata$Total_Steps_per_Day,na.rm=TRUE)
 ```
 
 ```
-## [1] 37.37847
+## [1] 10395
 ```
 ## What is the average daily activity pattern?
 Now we take the number of steps for each given interval and average them across all the 61 recorded days from the Oct to Nov period.
@@ -117,34 +117,35 @@ for (i in intervallist) {
   newdata$steps<-replace(newdata$steps,which((newdata$interval==i)&(is.na(newdata$steps))),dailyavedata[dailyavedata$Interval==i,"Mean_Steps_per_Interval"])
 }
 ```
-Now we show again the histogram of the average number obtained.
-INterstingly, there is little difference between this and the imputed version.
+
+Now we show again the histogram of the total number of steps obtained. It is now different from the original diagram.
 
 
 ```r
-meandata2<-aggregate(newdata$steps,list(newdata$date),mean,na.rm=TRUE)
-names(meandata2)<-c('Date','Mean_Steps_per_Day')
-hist(meandata2$Mean_Steps_per_Day,xlab='Mean Steps per Day',main='Histogram of Mean Steps per Day \n from 1st Oct to 30th Nov 2012')
+totaldata2<-aggregate(newdata$steps,list(newdata$date),sum,na.rm=TRUE)
+names(totaldata2)<-c('Date','Total_Steps_per_Day')
+hist(totaldata2$Total_Steps_per_Day,breaks =20,xlab='Total Steps per Day',main='Histogram of total Steps per Day \n from 1st Oct to 30th Nov 2012')
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
-The mean number of total steps per day also remains the same as follows: 
+
+The mean number of total steps per day has also increased: 
 
 ```r
-mean(meandata2$Mean_Steps_per_Day,na.rm=TRUE)
+mean(totaldata2$Total_Steps_per_Day,na.rm=TRUE)
 ```
 
 ```
-## [1] 37.3826
+## [1] 10766.19
 ```
 While the median number has changed to be equal to the mean:
 
 ```r
-median(meandata2$Mean_Steps_per_Day,na.rm=TRUE)
+median(totaldata2$Total_Steps_per_Day,na.rm=TRUE)
 ```
 
 ```
-## [1] 37.3826
+## [1] 10766.19
 ```
 
 ## Are there differences in activity patterns between weekdays and weekends?
